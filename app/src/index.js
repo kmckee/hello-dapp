@@ -6,7 +6,7 @@ const App = {
   account: null,
   meta: null,
 
-  start: async function() {
+  start: async function () {
     const { web3 } = this;
 
     try {
@@ -15,7 +15,7 @@ const App = {
       const deployedNetwork = metaCoinArtifact.networks[networkId];
       this.meta = new web3.eth.Contract(
         metaCoinArtifact.abi,
-        deployedNetwork.address,
+        deployedNetwork.address
       );
 
       // get accounts
@@ -28,7 +28,7 @@ const App = {
     }
   },
 
-  refreshBalance: async function() {
+  refreshBalance: async function () {
     const { getBalance } = this.meta.methods;
     const balance = await getBalance(this.account).call();
 
@@ -36,7 +36,7 @@ const App = {
     balanceElement.innerHTML = balance;
   },
 
-  sendCoin: async function() {
+  sendCoin: async function () {
     const amount = parseInt(document.getElementById("amount").value);
     const receiver = document.getElementById("receiver").value;
 
@@ -49,7 +49,7 @@ const App = {
     this.refreshBalance();
   },
 
-  setStatus: function(message) {
+  setStatus: function (message) {
     const status = document.getElementById("status");
     status.innerHTML = message;
   },
@@ -57,18 +57,18 @@ const App = {
 
 window.App = App;
 
-window.addEventListener("load", function() {
+window.addEventListener("load", function () {
   if (window.ethereum) {
     // use MetaMask's provider
     App.web3 = new Web3(window.ethereum);
     window.ethereum.enable(); // get permission to access accounts
   } else {
     console.warn(
-      "No web3 detected. Falling back to http://127.0.0.1:8545. You should remove this fallback when you deploy live",
+      "No web3 detected. Falling back to http://127.0.0.1:7545. You should remove this fallback when you deploy live"
     );
     // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
     App.web3 = new Web3(
-      new Web3.providers.HttpProvider("http://127.0.0.1:8545"),
+      new Web3.providers.HttpProvider("http://127.0.0.1:7545")
     );
   }
 
